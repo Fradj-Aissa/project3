@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>photo</title>
+    <style>
+        body {
+    font-family: "Myriad Pro", Arial, sans-serif;
+    }
+
+        .cen {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        div.ELEMENT {
+            background-image: url(GreenTick2Line111.png);
+            width: 700px;
+            height: 475px;
+            background-size: cover;
+            position: relative;
+            flex-basis: 1;
+        }
+        .firstimg, .scendimg, .name, .lastName, .sex, .data, .IDin {
+            position: absolute;
+            font-family: sans-serif;
+            font-weight: bold;
+            font-size: 26px;
+        }
+        .firstimg {
+            top: 83px;
+            left: 13px;
+            width: 208px;
+            height: 261px;
+        }
+        .scendimg {
+            top: 297px;
+            left: 584px;
+            width: 77px;
+            height: 98px;
+        }
+        .name {
+            top: 332px;
+            left: 257px;
+        }
+        .lastName {
+            top: 227px;
+            left: 257px;
+        }
+        .IDin {
+            top: 319px;
+            left: 34px;
+            text-transform: uppercase;
+        }
+        .data {
+            top: 394px;
+            left: 48px;
+        }
+        .sex {
+            top: 348px;
+            left: 482px;
+            text-transform: uppercase;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+        div.forme {
+            border: 1px solid #ccc;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            width: 400px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        #profileImage {
+            margin-bottom: 15px;
+        }
+        @media (max-width: 1000PX){ /* medium devices => Tablets */ 
+            .cen {
+                width: 100%;
+                display: block;
+            }
+            div.forme {
+            display: block;
+            width: 100%;
+        }
+        }
+    </style>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+</head>
+<body>
+    <div class="cen">
+        <div class="ELEMENT">
+            <img class="firstimg" src="" alt="">
+            <img class="scendimg" src="" alt="">
+            <p class="lastName"></p>
+            <p class="name"></p>
+            <p class="IDin">IW764-58528</p>
+            <p class="data"></p>
+            <p class="sex">m</p>
+        </div>
+
+        <div class="forme">
+
+            <label for="lastName">First Name:</label>
+            <input type="text" id="lastName">
+
+            <label for="firstName">Last Name:</label>
+            <input type="text" id="firstName">
+            
+            <label for="id">ID:</label>
+            <input type="text" id="id">
+
+            <label for="dob">Date of Birth:</label>
+            <input type="text" id="dob">
+
+            <label for="gender">Gender:</label>
+            <input type="text" id="gender" >
+
+            <label for="profileImage">Profile Image:</label>
+            <input type="file" id="profileImage" accept="image/*">
+
+            <button onclick="updateData()">Update Data</button>
+            <button onclick="convertElementToImage()">Convert and Download Image</button>
+        </div>
+    </div>
+
+    <script>
+        function updateData() {
+            var firstName = document.getElementById('firstName').value;
+            var lastName = document.getElementById('lastName').value;
+            var id = document.getElementById('id').value;
+            var dob = document.getElementById('dob').value;
+            var gender = document.getElementById('gender').value;
+
+            document.querySelector('.name').textContent = firstName || "Default Name";
+            document.querySelector('.lastName').textContent = lastName || "Default Last Name";
+            document.querySelector('.IDin').textContent = id || "IW764-58528";
+            document.querySelector('.data').textContent = dob || "Default Date of Birth";
+            document.querySelector('.sex').textContent = gender || "m";
+
+            // Update profile image
+            var profileImageInput = document.getElementById('profileImage');
+            var profileImageFile = profileImageInput.files[0];
+
+            if (profileImageFile) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var profileImageDataURL = e.target.result;
+                    var firstImageElement = document.querySelector('.firstimg');
+                    var secondImageElement = document.querySelector('.scendimg');
+                    firstImageElement.src = profileImageDataURL;
+                    secondImageElement.src = profileImageDataURL;
+                };
+                reader.readAsDataURL(profileImageFile);
+            }
+        }
+
+        function convertElementToImage() {
+            // Get the ELEMENT div
+            var elementDiv = document.querySelector('.ELEMENT');
+
+            // Use HTML2Canvas to capture the screenshot
+            html2canvas(elementDiv).then(function (canvas) {
+                // Convert the canvas to a data URL
+                var imageDataURL = canvas.toDataURL("image/png");
+
+                // Create a download link for the image
+                var downloadLink = document.createElement('a');
+                downloadLink.href = imageDataURL;
+                downloadLink.download = 'element_image.png';
+
+                // Append the link to the body
+                document.body.appendChild(downloadLink);
+
+                // Trigger a click on the link to start the download
+                downloadLink.click();
+
+                // Remove the link from the DOM
+                document.body.removeChild(downloadLink);
+            });
+        }
+    </script>
+</body>
+</html>
